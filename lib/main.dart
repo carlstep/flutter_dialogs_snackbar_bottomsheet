@@ -37,6 +37,9 @@ class _MainPageState extends State<MainPage> {
     ),
     backgroundColor: Colors.blueGrey,
   );
+
+  String delete = 'No choice made.';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +53,54 @@ class _MainPageState extends State<MainPage> {
               },
               child: Text('Save'),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.amber),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      alignment: Alignment.topCenter,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              delete = 'You selected no!';
+                            });
+                            // using Navigator.pop, when action is pressed, the dialog screen closes
+                            Navigator.pop(context);
+                          },
+                          child: Text('No!'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              delete = 'You selected yes!';
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: Text('Yes'),
+                        ),
+                      ],
+                      title: Text('Delete entry 12345'),
+                      content:
+                          Text('Are you sure you want to delete this entry?'),
+                    );
+                  },
+                );
+              },
+              child: Text('Delete'),
+            ),
+            SizedBox(
+              height: 120,
+            ),
+            Text(delete),
           ],
         ),
       ),
