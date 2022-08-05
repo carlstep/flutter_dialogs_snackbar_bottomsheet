@@ -39,6 +39,7 @@ class _MainPageState extends State<MainPage> {
   );
 
   String delete = 'No choice made.';
+  String location = 'None Selected Yet!';
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +99,54 @@ class _MainPageState extends State<MainPage> {
               child: Text('Delete'),
             ),
             SizedBox(
-              height: 120,
+              height: 20,
             ),
             Text(delete),
+            SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                // How do Futures work
+                final String loc = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SimpleDialog(
+                      alignment: Alignment.bottomCenter,
+                      title: Text('Choose Your Location...'),
+                      children: [
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.pop(context, 'South Africa');
+                          },
+                          child: Text('South Africa'),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.pop(context, 'China');
+                          },
+                          child: Text('China'),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.pop(context, 'Brazil');
+                          },
+                          child: Text('Brazil'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                setState(() {
+                  location = loc;
+                });
+              },
+              child: Text('Choose Location'),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text('Your location is: $location'),
           ],
         ),
       ),
