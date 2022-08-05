@@ -41,9 +41,14 @@ class _MainPageState extends State<MainPage> {
   String delete = 'No choice made.';
   String location = 'None Selected Yet!';
 
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  String bottomSheetValue = 'Nothing Selected';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +77,7 @@ class _MainPageState extends State<MainPage> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              delete = 'You selected no!';
+                              delete = 'You selected NO!';
                             });
                             // using Navigator.pop, when action is pressed, the dialog screen closes
                             Navigator.pop(context);
@@ -82,7 +87,7 @@ class _MainPageState extends State<MainPage> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              delete = 'You selected yes!';
+                              delete = 'You selected YES!';
                             });
                             Navigator.pop(context);
                           },
@@ -147,6 +152,77 @@ class _MainPageState extends State<MainPage> {
               height: 10,
             ),
             Text('Your location is: $location'),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                scaffoldKey.currentState?.showBottomSheet((context) {
+                  return Container(
+                    height: 140,
+                    decoration: BoxDecoration(
+                      color: Colors.green[100],
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(55),
+                      ),
+                    ),
+                    child: Center(
+                        child: Padding(
+                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Are you sure you want to delete?',
+                            style: GoogleFonts.poppins(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.blueGrey),
+                            textAlign: TextAlign.center,
+                          ),
+                          ButtonBar(
+                            alignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    bottomSheetValue = 'YES';
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'YES',
+                                  style: TextStyle(
+                                      color: Colors.blueGrey[400],
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    bottomSheetValue = 'NO';
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'NO',
+                                  style: TextStyle(
+                                      color: Colors.blueGrey[400],
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )),
+                  );
+                });
+              },
+              child: Text('Bottom Sheet'),
+            ),
+            Text(bottomSheetValue),
           ],
         ),
       ),
